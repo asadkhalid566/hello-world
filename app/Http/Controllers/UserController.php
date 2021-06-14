@@ -26,9 +26,18 @@ class UserController extends Controller
 
         return view('instructor');
     }
+    public function logout(){
+       if(session()->has('loggeduser')){
+           session()->pull('loggeduser');
+           return view('login');
+       }
+       else{
+        return view('home');
+       }
+
+    }
 
 
-  
 
 
     public function register(request $request){
@@ -37,23 +46,36 @@ class UserController extends Controller
         $user->name=$request->input('name');
         $user->email=$request->input('email');
         $user->password=$request->input('password');
-        $user->passconf=$request->input('passconf');
-        $user->mobile=$request->input('mobile');
+
+        $user->phone=$request->input('mobile');
         $user->address=$request->input('address');
-        $user->role=$request->input('role');
+        $user->role_as=$request->input('role');
         $user->save();
 
     }
 
     public function login(request $request){
 
-        $user= User::where('email',$request->input('email'))->get();
-        if($user[0]->password==$request->input('password'))
-        {
-            //  echo "welcome";
-            return response()->json([1]);
+
+        if($user= User::where('email','=',$request->email)->where('password','=',$request->password)->where('status','=',1)->first()){
+
+            if($user->role_as=='admin')
+            {
+
+                $request->session()->put('loggeduser',$user->id);
+                return view('admin.admin_home');
+
+            }
+            else{
+                return back()->with('success','please enter correct information');
+            }
         }
-       
-  
+
+
+        else{
+            return back()->with('success','please enter correct information');
+        }
+
+
     }
 }

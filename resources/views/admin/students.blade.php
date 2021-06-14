@@ -39,7 +39,8 @@
 
                             <div class="QA_table mb_30">
                                 <!-- table-responsive -->
-                                <table class="table lms_table_active ">
+                                <div class="card-body table-responsive">
+                                    <table id="example1" class="table lms_table_active ">
                                     <thead>
                                         <tr>
                                             <th scope="col">Id</th>
@@ -53,15 +54,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($std as $std)
+                                        @foreach($stds as $std)
                                         <tr>
                                             <td>{{$std->id}}</td>
                                             <td>{{$std->name}}</td>
                                             <td>{{$std->email}}</td>
                                             <td>{{$std->address}}</td>
                                             <td>{{$std->mobile}}</td>
-                                            <td>{{$std->role_as}}</td>
-                                            <td><a href="#" class="status_btn">Active</a></td>
+                                            <td>{{$std->role->role_name}}</td>
+                                            <td><a href="{{url('status/'.$std->id)}}" class="status_btn">@if($std->status==0)Pending  @else  Approve @endif</a></td>
                                             <td>
                                                 <!-- <li class="nav-item"> <a href="" data-toggle="modal"
                                                         data-target="#registerModal" class="nav-link">
@@ -69,7 +70,7 @@
                                                     </a></li> -->
 
                                                     <a href="#" class="badge badge-pill btn-danger px-3 py-2 editbtn" >Edit</a>
-                                                <a href="" class="badge badge-pill btn-danger px-3 py-2">Delete</a>
+                                                <a href="{{url('std_delete/'.$std->id)}}" class="badge badge-pill btn-danger px-3 py-2">Delete</a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -79,7 +80,10 @@
 
 
                                     </tbody>
+
                                 </table>
+                                {!! $stds->links('pagination::bootstrap-4') !!}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -91,9 +95,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 

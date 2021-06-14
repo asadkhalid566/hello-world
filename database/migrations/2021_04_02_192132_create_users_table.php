@@ -19,11 +19,23 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
 
             $table->string('password');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('role_as');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('class_id')->nullable();
+            $table->unsignedBigInteger('diary_id')->nullable();
+
+
+
+            $table->boolean('status')->default(false);
+
 
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('checkbox')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->string('image')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

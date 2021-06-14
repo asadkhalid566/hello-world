@@ -3,7 +3,13 @@
 @extends('layouts.admins')
 
 @section('content')
+@if ($message = Session::get('success'))
+<div class="alert alert-success alert-block">
 
+        <strong>{{ $message }}</strong>
+
+</div>
+@endif
 <div class="main_content_iner ">
     <div class="container-fluid p-0">
         <div class="row justify-content-center">
@@ -45,27 +51,25 @@
                                             <th scope="col">Id</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Email</th>
-                                            <th scope="col">Address</th>
-                                            <th scope="col">Phone</th>
-                                            <th scope="col">Role</th>
+                                                                                      <th scope="col">Role</th>
 
                                             <th scope="col">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($user as $user)
+                                        @foreach($users as $user)
                                         <tr>
                                             <td>{{$user->id}}</td>
                                             <td>{{$user->name}}</td>
                                             <td>{{$user->email}}</td>
-                                            <td>{{$user->address}}</td>
-                                            <td>{{$user->mobile}}</td>
-                                            <td>{{$user->role_as}}</td>
-                                            <td><a href="#" class="status_btn">Active</a></td>
+                                            {{-- <td>{{optional($user->role)->role_name}}</td> --}}
+                                            <td>0</td>
+                                            <td><a href="{{url('status/'.$user->id)}}" class="status_btn">@if($user->status==0)Pending  @else  Approve @endif</a></td>
+                                            <td>
                                             <td>
 
-
-                                                    <a href="#" class="badge badge-pill btn-danger px-3 py-2 editbtn" >Delete</a>
+                                                <a href="#" class="badge badge-pill btn-danger px-3 py-2 editbtn" >Roles</a>
+                                                    <a href="{{url('record_delete/'.$user->id)}}" class="badge badge-pill btn-danger px-3 py-2 editbtn" >Delete</a>
 
                                             </td>
                                         </tr>
@@ -77,6 +81,7 @@
 
                                     </tbody>
                                 </table>
+                                {{-- {!! $users->links('pagination::bootstrap-4') !!} --}}
                             </div>
                         </div>
                     </div>
@@ -90,82 +95,79 @@
 </div>
 
 
+@push('script')
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('.editbtn').on('click', function() {
+
+            $('#exampleModal').modal('show');
+            $tr=$(this).closest('tr');
+            var data=$tr.children("td").map(function(){
+
+                return $(this).text();
+            }).get();
+            console.log(data);
+
+            $('#id').val(data[0]);
+            $('#name').val(data[1]);
+            $('#email').val(data[2]);
 
 
 
 
 
+            $('#exampleModal').on('submit', function(e) {
+
+    e.preventDefault();
+     let id=$('#id').val();
+
+     let roles=$('#roles').val();
+
+
+        class1=$('#class').val();
 
 
 
 
 
-    @push('script')
-    <script type="text/javascript">
-        $(document).ready(function() {
+    $.ajax({
+        type: 'PUT',
+        url: "/record/"+id,
+        data: {
+            roles:roles,class1:class1,
 
-            $('.editbtn').on('click', function() {
+            _token: '{{csrf_token()}}' ,
+        },
+        success: function(data) {
+            console.log(data)
+            $("#exampleModal").modal('hide');
+            alert("data saved");
+            window.location.href = "http://127.0.0.1:8000/new#";
 
-                $('#exampleModal').modal('show');
-                $tr=$(this).closest('tr');
-                var data=$tr.children("td").map(function(){
-
-                    return $(this).text();
-                }).get();
-                console.log(data);
-
-                $('#id').val(data[0]);
-
-
-
-
-
-                $('#exampleModal').on('submit', function(e) {
-
-        e.preventDefault();
-         let id=$('#id').val();
+        }
+    });
+});
 
 
-        $.ajax({
-            type: 'DELETE',
-            url: "/admindelete/"+id,
-            data: {
 
-                _token: '{{csrf_token()}}' ,
-            },
-            success: function(data) {
-                console.log(data)
-                $("#exampleModal").modal('hide')
-                alert("data saved");
-            }
-        });
+
+            $(".close").click(function(){
+        $("#exampleModal").modal('hide');
     });
 
 
-
-
-
-
-
-
-
-
-                $(".close").click(function(){
-            $("#exampleModal").modal('hide');
         });
-
-
-            });
-        });
-        </script>
+    });
+    </script>
 @endpush
-
 
 @endsection()
 
 
+
     <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -185,17 +187,53 @@
                                       <input type="hidden" name="id" id="id">
                                         <h2 class="form-title">Edit Teacher</h2>
                                         <div class="mb-3 row">
-
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Name</label>
                                             <div class="col-sm-10">
-                                               Are u sure?
+                                                <input type="text" class="form-control" id="name" name="name" readonly
+                                                   >
                                             </div>
                                         </div>
 
 
+                                        <div class="mb-3 row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="email" name="email"
+                                                readonly  >
+                                            </div>
+                                        </div>
+
+
+                                        <div class="mb-3 row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Role</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" name="roles" id="roles">
+                                                    <option>-- Select Role--</option>
+                                                    @foreach($roles as $role)
+                                                    <option value="{{$role->id}}">{{$role->role_name}}</option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="mb-3 row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Class</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" name="class" id="class">
+                                                    <option>-- Select Class--</option>
+                                                    @foreach($class as $class)
+                                                    <option value="{{$class->id}}">{{$class->classname}}</option>
+                                                    @endforeach
+
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
-
-
-                                                <button type="submit" name="submit" class="form-submit">Delete</button>
+                                            <input type="submit" name="submit" id="submit" class="form-submit"
+                                                value="Sign up" />
                                         </div>
 
 
@@ -211,3 +249,6 @@
             </div>
         </div>
     </div>
+
+
+

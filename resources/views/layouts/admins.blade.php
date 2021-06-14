@@ -10,20 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Marketing</title>
 
+    <link rel="stylesheet" href="{{asset('admin/vendors/text_editor/summernote-bs4.css')}}" />
+
+
     <link rel="icon" href="img/logo.png" type="image/png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('admin/css/bootstrap.min.css')}}" />
     <!-- themefy CSS -->
     <link rel="stylesheet" href="{{asset('admin/vendors/themefy_icon/themify-icons.css')}}" />
-    <!-- select2 CSS -->
-    <link rel="stylesheet" href="vendors/niceselect/css/nice-select.css" />
-    <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="vendors/owl_carousel/css/owl.carousel.css" />
-    <!-- gijgo css -->
-    <link rel="stylesheet" href="vendors/gijgo/gijgo.min.css" />
-    <!-- font awesome CSS -->
-    <link rel="stylesheet" href="vendors/font_awesome/css/all.min.css" />
-    <link rel="stylesheet" href="vendors/tagsinput/tagsinput.css" />
 
      <!-- scrollabe  -->
      <link rel="stylesheet" href="{{asset('admin/vendors/scroll/scrollable.css')}}" />
@@ -33,12 +27,7 @@
     <link rel="stylesheet" href="{{asset('admin/css/buttons.dataTables.min.css')}}" />
     <!-- text editor css -->
     <link rel="stylesheet" href="vendors/text_editor/summernote-bs4.css" />
-    <!-- morris css -->
-    <link rel="stylesheet" href="vendors/morris/morris.css">
-    <!-- metarial icon css -->
-    <link rel="stylesheet" href="vendors/material_icon/material-icons.css" />
 
-    <!-- menu css  -->
     <link rel="stylesheet" href="{{asset('admin/css/metisMenu.css')}}">
     <!-- style CSS -->
     <link rel="stylesheet" href="{{asset('admin/css/style.css')}}" />
@@ -60,178 +49,113 @@
     </div>
     <ul id="sidebar_menu">
         <li class="mm-active">
-          <a class="has-arrow"  href="#"  aria-expanded="false">
+            @if (auth()->user()->role_id=='1')
+            <a class="has-arrow"  href="{{url('/admin_home')}}"  aria-expanded="false">
+                @elseif(auth()->user()->role_id=='2')
+                <a class="has-arrow"  href="{{url('/teacher_home')}}"  aria-expanded="false">
+                    @elseif(auth()->user()->role_id=='3')
+                    <a class="has-arrow"  href="{{url('/std_home')}}"  aria-expanded="false">
+            @endif
+
+
           <div class="icon_menu">
-              <img src="img/menu-icon/dashboard.svg" alt="">
+              <img src="{{asset('admin/img/menu-icon/dashboard.svg')}}" alt="">
         </div>
             <span>Dashboard</span>
           </a>
 
         </li>
+         @if (Auth::user()->role_id==1  )
         <li class="">
-            <a   class="has-arrow" href="#" aria-expanded="false">
+            <a  href="{{url('/new')}}"  class="has-arrow" href="#" aria-expanded="false">
               <div class="icon_menu">
                   <img src="{{asset('admin/img/menu-icon/2.svg')}}" alt="">
               </div>
-              <span>Apps</span>
+              <span>New Entries</span>
             </a>
-            <ul>
-              <li><a href="editor.html">editor</a></li>
-              <li><a href="mail_box.html">Mail Box</a></li>
-              <li><a href="chat.html">Chat</a></li>
-              <li><a href="faq.html">FAQ</a></li>
-            </ul>
           </li>
+          @endif
 
-        <li class="">
-          <a   class="has-arrow" href="#" aria-expanded="false">
-
-            <div class="icon_menu">
-                <img src="img/menu-icon/4.svg" alt="">
-            </div>
-            <span>forms</span>
-          </a>
-          <ul>
-            <li><a href="Basic_Elements.html">Basic Elements</a></li>
-            <li><a href="Groups.html">Groups</a></li>
-            <li><a href="Max_Length.html">Max Length</a></li>
-            <li><a href="Layouts.html">Layouts</a></li>
-          </ul>
-        </li>
-
-
-
-
-
-        <li class="">
-          <a   class="has-arrow" href="#" aria-expanded="false">
-            <div class="icon_menu">
-                <img src="img/menu-icon/8.svg" alt="">
-            </div>
-            <span>Icons</span>
-          </a>
-          <ul>
-            <li><a href="Fontawesome_Icon.html">Fontawesome Icon</a></li>
-            <li><a href="themefy_icon.html">themefy icon</a></li>
-          </ul>
-        </li>
-
-        <li class="">
-            <a   class="has-arrow" href="#" aria-expanded="false">
+          @if (Auth::user()->role_id==1  )
+          <li class="">
+            <a   class="has-arrow" href="{{url('/admin_teacher')}}" aria-expanded="false">
               <div class="icon_menu">
-                  <img src="img/menu-icon/9.svg" alt="">
+                  <img src="{{asset('admin/img/menu-icon/11.svg')}}" alt="">
               </div>
-              <span>Animations</span>
+              <span>Teachers</span>
             </a>
-            <ul>
-                <li><a href="wow_animation.html">Animate</a></li>
-                <li><a href="Scroll_Reveal.html">Scroll Reveal</a></li>
-                <li><a href="tilt.html">Tilt Animation</a></li>
-
-            </ul>
           </li>
+         @endif
+
+
+
+
+         @if (Auth::user()->role_id==1  || auth::user()->role_id==2  )
+        <li class="">
+          <a   class="has-arrow" href="{{url('/admin_std')}}" aria-expanded="false">
+            <div class="icon_menu">
+                <img src="{{asset('admin/img/menu-icon/11.svg')}}" alt="">
+            </div>
+            <span>Students</span>
+          </a>
+        </li>
+        @endif
+
+
+
+          <li class="">
+            <a   class="has-arrow" href="{{url('/admin_profile')}}" aria-expanded="false">
+              <div class="icon_menu">
+                  <img src="{{asset('admin/img/menu-icon/16.svg')}}" alt="">
+              </div>
+              <span>Profile</span>
+            </a>
+
+          </li>
+
+          @if (auth::user()->role_id==1 || auth::user()->role_id==2 )
           <li class="">
             <a   class="has-arrow" href="#" aria-expanded="false">
               <div class="icon_menu">
-                  <img src="img/menu-icon/10.svg" alt="">
+                  <img src="{{asset('admin/img/menu-icon/4.svg')}}" alt="">
               </div>
-              <span>Components</span>
+              <span>Diary</span>
             </a>
             <ul>
-              <li><a href="accordion.html">Accordions</a></li>
-              <li><a href="Scrollable.html">Scrollable</a></li>
-              <li><a href="notification.html">Notifications</a></li>
-              <li><a href="carousel.html">Carousel</a></li>
-              <li><a href="Pagination.html">Pagination</a></li>
-            </ul>
-          </li>
+                <li><a href="{{url('/diary')}}">Create</a></li>
+                <li><a href="{{url('/getdiary')}}">View</a></li>
 
+              </ul>
+          </li>
+          @endif
+
+          @if (auth::user()->role_id==3 )
           <li class="">
-            <a   class="has-arrow" href="#" aria-expanded="false">
+            <a   class="has-arrow" href="{{url('/stddiary')}}" aria-expanded="false">
               <div class="icon_menu">
-                  <img src="img/menu-icon/11.svg" alt="">
+                  <img src="{{asset('admin/img/menu-icon/4.svg')}}" alt="">
               </div>
-              <span>Table</span>
+              <span>Diary</span>
             </a>
-            <ul>
-                <li><a href="data_table.html">Data Tables</a></li>
-                <li><a href="bootstrap_table.html">Bootstrap</a></li>
-            </ul>
+
           </li>
-          <li class="">
-            <a   class="has-arrow" href="#" aria-expanded="false">
+          @endif
+
+
+        <li class="">
+            <a   class="has-arrow"  href="{{ route('logout') }}" aria-expanded="false"
+                onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
               <div class="icon_menu">
-                  <img src="img/menu-icon/12.svg" alt="">
+                  <img src="{{asset('admin/img/menu-icon/14.svg')}}" alt="">
               </div>
-              <span>Cards</span>
+              <span> {{ __('Logout') }}
+            </span>
             </a>
-            <ul>
-                <li><a href="basic_card.html">Basic Card</a></li>
-                <li><a href="theme_card.html">Theme Card</a></li>
-                <li><a href="dargable_card.html">Draggable Card</a></li>
-            </ul>
-          </li>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
 
-
-        <li class="">
-          <a   class="has-arrow" href="#" aria-expanded="false">
-            <div class="icon_menu">
-                <img src="img/menu-icon/13.svg" alt="">
-            </div>
-            <span>Charts</span>
-          </a>
-          <ul>
-            <li><a href="chartjs.html">ChartJS</a></li>
-            <li><a href="apex_chart.html">Apex Charts</a></li>
-            <li><a href="chart_sparkline.html">Chart sparkline</a></li>
-            <li><a href="am_chart.html">am-charts</a></li>
-            <li><a href="nvd3_charts.html">nvd3 charts.</a></li>
-          </ul>
-        </li>
-
-
-        <li class="">
-          <a   class="has-arrow" href="#" aria-expanded="false">
-            <div class="icon_menu">
-                <img src="img/menu-icon/14.svg" alt="">
-            </div>
-            <span>Widgets</span>
-          </a>
-          <ul>
-            <li><a href="chart_box_1.html">Chart Boxes 1</a></li>
-            <li><a href="profilebox.html">Profile Box</a></li>
-          </ul>
-        </li>
-
-
-        <li class="">
-          <a   class="has-arrow" href="#" aria-expanded="false">
-            <div class="icon_menu">
-                <img src="img/menu-icon/15.svg" alt="">
-            </div>
-            <span>Maps</span>
-          </a>
-          <ul>
-            <li><a href="mapjs.html">Maps JS</a></li>
-            <li><a href="vector_map.html">Vector Maps</a></li>
-          </ul>
-        </li>
-        <li class="">
-            <a   class="has-arrow" href="#" aria-expanded="false">
-
-              <div class="icon_menu">
-                  <img src="img/menu-icon/16.svg" alt="">
-              </div>
-              <span>Pages</span>
-            </a>
-            <ul>
-              <li><a href="login.html">Login</a></li>
-              <li><a href="resister.html">Register</a></li>
-              <li><a href="error_400.html">Error 404</a></li>
-              <li><a href="error_500.html">Error 500</a></li>
-              <li><a href="forgot_pass.html">Forgot Password</a></li>
-              <li><a href="gallery.html">Gallery</a></li>
-            </ul>
           </li>
 
       </ul>
@@ -257,7 +181,7 @@
                                     <button type="submit"> <img src="img/icon/icon_search.svg" alt=""> </button>
                                 </form>
                             </div>
-                            <span class="f_s_14 f_w_400 ml_25 white_text text_white" >Apps</span>
+                            <span class="f_s_14 f_w_400 ml_25 white_text text_white" >New Entries</span>
                         </div>
                     <div class="header_right d-flex justify-content-between align-items-center">
                         <div class="header_notification_warp d-flex align-items-center">
@@ -517,37 +441,23 @@
 <script src="{{asset('admin/js/bootstrap.min.js')}}"></script>
 <!-- sidebar menu  -->
 <script src="{{asset('admin/js/metisMenu.js')}}"></script>
-<!-- waypoints js -->
-<script src="vendors/count_up/jquery.waypoints.min.js"></script>
-<!-- waypoints js -->
-<script src="vendors/chartlist/Chart.min.js"></script>
-<!-- counterup js -->
-<script src="vendors/count_up/jquery.counterup.min.js"></script>
 
-<!-- nice select -->
-<script src="vendors/niceselect/js/jquery.nice-select.min.js"></script>
-<!-- owl carousel -->
-<script src="vendors/owl_carousel/js/owl.carousel.min.js"></script>
 
-<!-- responsive table -->
-<script src="vendors/datatable/js/jquery.dataTables.min.js"></script>
-<script src="vendors/datatable/js/dataTables.responsive.min.js"></script>
-<script src="vendors/datatable/js/dataTables.buttons.min.js"></script>
-<script src="vendors/datatable/js/buttons.flash.min.js"></script>
-<script src="vendors/datatable/js/jszip.min.js"></script>
-<script src="vendors/datatable/js/pdfmake.min.js"></script>
-<script src="vendors/datatable/js/vfs_fonts.js"></script>
-<script src="vendors/datatable/js/buttons.html5.min.js"></script>
-<script src="vendors/datatable/js/buttons.print.min.js"></script>
+<script>
+
+window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+}, 2000);
+
+
+</script>
 
 
 
-<!-- progressbar js -->
-<script src="vendors/progressbar/jquery.barfiller.js"></script>
-<!-- tag input -->
-<script src="vendors/tagsinput/tagsinput.js"></script>
 <!-- text editor js -->
-<script src="vendors/text_editor/summernote-bs4.js"></script>
+<script src="{{asset('admin/vendors/text_editor/summernote-bs4.js')}}"></script>
 
 
 <!-- scrollabe  -->
@@ -559,6 +469,7 @@
 <script src="{{asset('admin/js/dashboard_init.js')}}"></script>
 <script src="{{asset('admin/js/custom.js')}}"></script>
 @stack('script')
+
 </body>
 
 <!-- Mirrored from demo.dashboardpack.com/sales-html/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Apr 2021 22:34:54 GMT -->
